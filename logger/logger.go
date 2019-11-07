@@ -81,17 +81,17 @@ func LogErrorf(source string, v ...interface{}) {
 }
 
 // LogFatal Log error and exits
-func LogFatal(v ...interface{}) {
-	if v != nil {
-		LogError(v...)
+func LogFatal(err error) {
+	if err != nil {
+		LogError(err)
 		os.Exit(1)
 	}
 }
 
 // LogFatalf Log error and exits
-func LogFatalf(source string, v ...interface{}) {
-	if v != nil {
-		LogErrorf(source, v...)
+func LogFatalf(source string, err error) {
+	if err != nil {
+		LogErrorf(source, err)
 		os.Exit(1)
 	}
 }
