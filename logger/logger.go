@@ -87,7 +87,7 @@ func Errorf(source string, v ...interface{}) {
 // Fatal Log error and exits
 func Fatal(err error) {
 	if err != nil {
-		LogError(err)
+		Error(err)
 		os.Exit(1)
 	}
 }
@@ -95,7 +95,7 @@ func Fatal(err error) {
 // Fatalf Log error and exits
 func Fatalf(source string, v ...interface{}) {
 	if v != nil {
-		LogErrorf(source, v...)
+		Errorf(source, v...)
 		os.Exit(1)
 	}
 }
