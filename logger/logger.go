@@ -8,11 +8,15 @@ import (
 
 var (
 	//LogLevel level
-	LogLevel = DEBUG
+	LogLevel = INFO
 	//LogInFile bool
 	LogInFile = false
-	//LogFile path
-	LogFile = ""
+	//LogFile name
+	LogFile = "application.log"
+	//LogPathFile path file
+	LogPathFile = "./application.log"
+	//LogInTerm bool
+	LogInTerm = true
 )
 
 const (
@@ -27,7 +31,7 @@ const (
 )
 
 func logfile() (*log.Logger, *os.File) {
-	file, err := os.OpenFile(LogFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(LogPathFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		panic(err)
 	}
@@ -89,11 +93,19 @@ func LogFatal(err error) {
 }
 
 // LogFatalf Log error and exits
-func LogFatalf(source string, err error) {
-	if err != nil {
-		LogErrorf(source, err)
+func LogFatalf(source string, v ...interface{}) {
+	if v != nil {
+		LogErrorf(source, v...)
 		os.Exit(1)
 	}
+}
+
+// SetLoggerConf func to set logger
+func SetLoggerConf(level, file, output string, inFile, inTerm bool) {
+	SetLevel(level)
+	SetLogInTerm(inTerm)
+	SetLogInFile(inFile)
+	SetLogFile(output, file)
 }
 
 // SetLevel to set log level
@@ -112,14 +124,22 @@ func SetLevel(level string) {
 	}
 }
 
+// SetLogInTerm to set if a log term is used
+func SetLogInTerm(b bool) {
+	LogInTerm = b
+}
+
 // SetLogInFile to set if a log file is used
 func SetLogInFile(b bool) {
 	LogInFile = b
 }
 
 // SetLogFile to set the log file
-func SetLogFile(file string) {
-	LogFile = file
+func SetLogFile(path, file string) {
+	if len(file) > 0 {
+		LogPathFile = fmt.Sprintf("%s/%s", path, file)
+	}
+	LogPathFile = fmt.Sprintf("%s/%s", path, LogFile)
 }
 
 func logger(level int, v ...interface{}) {
@@ -144,7 +164,9 @@ func logger(level int, v ...interface{}) {
 			logger.Println(v...)
 		}
 
-		log.Println(v...)
+		if LogInTerm {
+			log.Println(v...)
+		}
 	}
 }
 
@@ -165,9 +187,11 @@ func loggerf(level int, source string, v ...interface{}) {
 		if LogInFile {
 			logger, f := logfile()
 			defer f.Close()
-			logger.Println(v...)
+			logger.Printf(source, v...)
 		}
 
-		log.Printf(source, v...)
+		if LogInTerm {
+			log.Printf(source, v...)
+		}
 	}
 }
