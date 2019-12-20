@@ -40,60 +40,60 @@ func logfile() (*log.Logger, *os.File) {
 	return logger, file
 }
 
-// LogDebug debug
-func LogDebug(v ...interface{}) {
+// Debug debug
+func Debug(v ...interface{}) {
 	logger(DEBUG, v...)
 }
 
-// LogDebugf debug
-func LogDebugf(source string, v ...interface{}) {
+// Debugf debug
+func Debugf(source string, v ...interface{}) {
 	loggerf(DEBUG, source, v...)
 }
 
-// Log info
-func Log(v ...interface{}) {
+// Info
+func Info(v ...interface{}) {
 	logger(INFO, v...)
 }
 
-// Logf info
-func Logf(source string, v ...interface{}) {
+// Iinfof
+func Infof(source string, v ...interface{}) {
 	loggerf(INFO, source, v...)
 }
 
-// LogWarn warning
-func LogWarn(v ...interface{}) {
+// Warn warning
+func Warn(v ...interface{}) {
 	logger(WARN, v...)
 }
 
-// LogWarnf warning
-func LogWarnf(source string, v ...interface{}) {
+// Warnf warning
+func Warnf(source string, v ...interface{}) {
 	loggerf(WARN, source, v...)
 }
 
-// LogError error
-func LogError(v ...interface{}) {
+// Error error
+func Error(v ...interface{}) {
 	if v != nil {
 		logger(ERROR, v...)
 	}
 }
 
-// LogErrorf error
-func LogErrorf(source string, v ...interface{}) {
+// Errorf error
+func Errorf(source string, v ...interface{}) {
 	if v != nil {
 		loggerf(ERROR, source, v...)
 	}
 }
 
-// LogFatal Log error and exits
-func LogFatal(err error) {
+// Fatal Log error and exits
+func Fatal(err error) {
 	if err != nil {
 		LogError(err)
 		os.Exit(1)
 	}
 }
 
-// LogFatalf Log error and exits
-func LogFatalf(source string, v ...interface{}) {
+// Fatalf Log error and exits
+func Fatalf(source string, v ...interface{}) {
 	if v != nil {
 		LogErrorf(source, v...)
 		os.Exit(1)
